@@ -1,0 +1,59 @@
+.nav {
+  width: 100%;
+  grid-area: nav;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3rem;
+  background-color: var(--color-bg-light);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.26);
+
+  h1 {
+    font-size: 3rem;
+  }
+
+  input {
+    // visibility: hidden;
+    display: none;
+  }
+
+  input:checked + label {
+    background-color: var(--color-bg-active);
+  }
+
+  label {
+    border-radius: 100px;
+    padding: 1rem;
+    // border: 1px solid rgb(228, 228, 228);
+    color: rgb(228, 228, 228);
+    background-color: var(--color-bg-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media screen and (max-width: 50em) {
+      padding: 1em;
+    }
+
+    &:hover {
+      background-color: var(--color-bg-hover);
+    }
+
+    &:active .app {
+      grid-template-columns: 23em 1fr;
+      grid-template-areas:
+        "nav nav"
+        "lib player";
+    }
+    &:active .library {
+      display: block;
+    }
+  }
+
+  // svg {
+  //   @media screen and (max-width: 50em) {
+  //     font-size: 1.5rem;
+  //   }
+  // }
+}

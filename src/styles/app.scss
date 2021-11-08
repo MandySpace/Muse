@@ -1,0 +1,53 @@
+@import "base";
+@import "song";
+@import "player";
+@import "library";
+@import "nav";
+
+.App {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 100px 1fr;
+  grid-template-areas:
+    "nav"
+    "player";
+  height: 100vh;
+
+  @media screen and (max-width: 50em) {
+    grid-template-rows: 70px 1fr;
+  }
+}
+
+.App-lib-active {
+  grid-template-columns: 23em 1fr;
+  grid-template-areas:
+    "nav nav"
+    "lib player";
+  @media screen and (max-width: 70em) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 70px 1fr;
+    grid-template-areas:
+      "nav"
+      "lib";
+  }
+}
+
+// @media screen and (max-width: 50em) {
+//   grid-template-columns: 1fr;
+//   grid-template-rows: 100px 1fr;
+//   grid-template-areas:
+//     "nav"
+//     "player";
+// }
+
+.player-container {
+  grid-area: player;
+  padding: 2rem 0;
+}
+
+.player-container-lib-active {
+  @media screen and (max-width: 70em) {
+    display: none;
+  }
+}

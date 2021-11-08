@@ -1,0 +1,67 @@
+.library {
+  grid-area: lib;
+  background-color: var(--color-bg-light);
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: auto !important;
+  display: none;
+
+  h2 {
+    margin: 2rem 1rem;
+  }
+
+  .library-songs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+.library-song {
+  display: flex;
+  gap: 1em;
+  padding: 0.5rem 1rem;
+  will-change: background-color;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  img {
+    width: 7em;
+  }
+
+  .song-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &:hover {
+    background-color: var(--color-bg-hover);
+  }
+}
+
+.selected {
+  background-color: var(--color-bg-active);
+
+  &:hover {
+    background-color: var(--color-bg-active);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a8a8a88a;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(31, 31, 31);
+}
+
+.library-lib-active {
+  display: block;
+}
