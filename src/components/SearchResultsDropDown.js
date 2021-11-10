@@ -1,11 +1,29 @@
-function searchResultsDropDown({ searchQueryResults, setCurrentSong }) {
-  const playSearchResultHandler = (result) => {
-    setCurrentSong({ ...result, active: true });
-    console.log(result);
+import { useRef } from "react";
+
+function SearchResultsDropDown({
+  searchQueryResults,
+  setCurrentSong,
+  audioRef,
+  setIsPlaying,
+  setSearchQuery,
+  songs,
+}) {
+  const clickOutsideRef = useRef(null);
+
+  const playSearchResultHandler = async (result) => {
+    await setCurrentSong(result);
+    setSearchQuery("");
+    setIsPlaying(true);
+    audioRef.current.play();
+    songs.forEach((song) => (song.active = false));
   };
 
+  document.querySelector("body").addEventListener("click", (e) => {
+    if (e.target !== clickOutsideRef) setSearchQuery("");
+  });
+
   return (
-    <div className="drop-down">
+    <div ref={clickOutsideRef} className="drop-down">
       {searchQueryResults.map((result) => {
         return (
           <div
@@ -29,4 +47,4 @@ function searchResultsDropDown({ searchQueryResults, setCurrentSong }) {
   );
 }
 
-export default searchResultsDropDown;
+export default SearchResultsDropDown;

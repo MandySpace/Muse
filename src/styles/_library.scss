@@ -9,23 +9,28 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 2rem 1rem;
+    padding: 1rem 1rem;
+    padding-left: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.26);
   }
 
   .lib-title {
+    flex: 1;
     display: inline-block;
   }
 
-  .back-icon {
+  .back-icon,
+  .close-icon {
     box-sizing: content-box;
     cursor: pointer;
     border-radius: 50%;
     padding: 0.3em;
 
     &:hover {
-      background-color: var(--color-bg-active);
+      color: var(--color-bg-active);
     }
   }
+
   .hide-back-icon {
     visibility: hidden;
   }

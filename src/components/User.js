@@ -1,41 +1,67 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMusic, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 
-function User() {
-  const [userData, setUserData] = useState();
+function User({
+  setUserData,
+  userData,
+  token,
+  dispLib,
+  setDispLib,
+  setLoggedIn,
+}) {
+  useEffect(() => {
+    axios
+      .get("https://api.spotify.com/v1/me", {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      })
+      .then((res) => setUserData(res.data))
+      .catch((err) => console.error("From User.js " + err));
+  }, [token]);
 
-  useEffect(
-    () =>
-      axios
-        .get("https://api.spotify.com/v1/me", {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("accessToken"),
-          },
-        })
-        .then((res) => setUserData(res.data))
-        .catch((err) => console.error(err)),
-    []
-  );
+  const checkboxRef = useRef(null);
 
   return (
     <div className="user">
-      {/* <input
-        className="checkbox user-checkbox"
-        type="checkbox"
-        id="user-info-toggle"
-      /> */}
-      {/* <label htmlFor="user-info-toggle"> */}
-      <img
-        src={userData?.images[0].url}
-        alt="Owners pic"
-        className="user-img"
-      />
-      {/* </label> */}
+      <form action="#">
+        <input
+          ref={checkboxRef}
+          className="checkbox-user checkbox"
+          type="checkbox"
+          id="user-toggle"
+        />
+        <label htmlFor="user-toggle" className="user-checkbox-label">
+          <img
+            src={userData?.images[0].url}
+            alt="Owners pic"
+            className="user-img"
+          />
+        </label>
 
-      {/* <div className="user-info">
-        <h3>Welcome, {userData.display_name}</h3>
-        <h4>Followers: {userData.followers.total}</h4>
-      </div> */}
+        <form action="#">
+          <input
+            className="checkbox-lib checkbox"
+            type="checkbox"
+            id="lib-toggle"
+          />
+          <label
+            className="lib-checkbox-label"
+            htmlFor="lib-toggle"
+            onClick={() => {
+              setDispLib(!dispLib);
+              checkboxRef.current.checked = false;
+            }}
+          >
+            <FontAwesomeIcon size="2x" icon={faMusic} />
+          </label>
+          <div className="sign-out" onClick={() => setLoggedIn(false)}>
+            <FontAwesomeIcon size="2x" icon={faSignOutAlt} />
+          </div>
+        </form>
+      </form>
     </div>
   );
 }

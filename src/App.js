@@ -6,10 +6,13 @@ import SpotifyGetPlaylist from "./components/SpotifyGetPlaylist";
 import SpotifyLogin from "./components/SpotifyLogin";
 import "./styles/app.scss";
 import { useState, useRef, useEffect } from "react";
+import axios from "axios";
+import Data from "./components/Data";
 
 function App() {
   //STATE HOOKS
-
+  const [token, setToken] = useState("");
+  const [userData, setUserData] = useState();
   const [loggedIn, setLoggedIn] = useState(false);
   const [songs, setSongs] = useState([]);
   const [playlists, setPlaylists] = useState([]);
@@ -35,6 +38,12 @@ function App() {
       localStorage.setItem("accessToken", access_token);
       localStorage.setItem("expiresIn", expires_in);
       localStorage.setItem("tokenType", token_type);
+      setLoggedIn(true);
+      setToken(access_token);
+      window.history.replaceState(null, null, " ");
+    }
+    if (localStorage.getItem("accessToken")) {
+      setToken(localStorage.getItem("accessToken"));
       setLoggedIn(true);
     }
   }, []);
@@ -69,6 +78,18 @@ function App() {
     audioRef.current.play();
   };
 
+  const playlistClickHandler = (playlist) => {
+    axios
+      .get(playlist.tracks.href, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        },
+      })
+      .then((res) => setSongs(Data(res.data)))
+      .catch((err) => console.error(err));
+    setDispLib(true);
+  };
+
   //FUNCTIONS
   const getreturendParamsFromSpotifyAuth = (hash) => {
     const stringAfterHashtag = hash.substring(1);
@@ -98,6 +119,13 @@ function App() {
           setDispLib={setDispLib}
           dispLib={dispLib}
           setCurrentSong={setCurrentSong}
+          audioRef={audioRef}
+          setIsPlaying={setIsPlaying}
+          songs={songs}
+          userData={userData}
+          setUserData={setUserData}
+          token={token}
+          setLoggedIn={setLoggedIn}
         />
 
         <Library
@@ -106,8 +134,10 @@ function App() {
           audioRef={audioRef}
           setIsPlaying={setIsPlaying}
           dispLib={dispLib}
+          setDispLib={setDispLib}
           setSongs={setSongs}
           playlists={playlists}
+          token={token}
         />
         {currentSong ? (
           <div
@@ -130,7 +160,34 @@ function App() {
             />
           </div>
         ) : (
-          ""
+          <div className="user-info">
+            <h2 className="user-name">Welcome, {userData?.display_name}</h2>
+            <p className="msg">
+              Start by searching for a song or selecting your favourite
+              playlist!
+            </p>
+            <div className="playlist-grid">
+              {playlists.map((playlist) => {
+                return (
+                  <div
+                    onClick={() => playlistClickHandler(playlist)}
+                    className="playlist-info"
+                    key={playlist.id}
+                  >
+                    <div className="playlist-img-container">
+                      <img
+                        className="playlist-img"
+                        src={playlist.images[0]?.url}
+                        alt=""
+                      />
+                    </div>
+                    <h3 className="playlist-name">{playlist.name}</h3>
+                    <h4 className="playlist-type">{playlist.type}</h4>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         )}
 
         <audio
@@ -145,6 +202,8 @@ function App() {
           loggedIn={loggedIn}
           setSongs={setSongs}
           setPlaylists={setPlaylists}
+          token={token}
+          setLoggedIn={setLoggedIn}
         />
       </div>
     </div>

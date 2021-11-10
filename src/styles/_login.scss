@@ -1,42 +1,31 @@
 .login-page {
-  height: 80vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 3rem;
 }
 
 .login-title {
-  font-size: 4rem;
+  font-size: 6rem;
   font-weight: 400;
+  margin-top: 2em;
 }
 
 .login-btn {
-  font-size: 2rem;
-  padding: 0.5em 1em;
+  font-size: 1.8rem;
+  font-weight: 100;
+  padding: 0.75em 2em;
   background-color: var(--color-bg-active);
   border: none;
   color: var(--color-font);
   cursor: pointer;
+  border-radius: 50px;
+  will-change: transform;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
 }
-
-// import { v4 as uuidv4 } from "uuid";
-
-// function Data(playlists) {
-//   return playlists.items.map((item) => item.name);
-
-//   // {
-//   //   name: "Under the City Stars",
-//   //   cover:
-//   //     "https://chillhop.com/wp-content/uploads/2020/09/0255e8b8c74c90d4a27c594b3452b2daafae608d-1024x1024.jpg",
-//   //   artist: "Aso, Middle School, Aviino",
-//   //   audio: "https://mp3.chillhop.com/serve.php/?mp3=10074",
-//   //   color: ["#205950", "#2ab3bf"],
-//   //   id: uuidv4(),
-//   //   active: false,
-//   // },
-//   //ADD MORE HERE
-// }
-
-// export default Data;

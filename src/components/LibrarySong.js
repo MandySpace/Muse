@@ -8,6 +8,7 @@ function LibrarySong({
   setIsPlaying,
   songs,
   setSongs,
+  token,
 }) {
   async function setCurrentSongHandler() {
     try {
@@ -15,7 +16,7 @@ function LibrarySong({
         axios
           .get(song.tracks.href, {
             headers: {
-              Authorization: "Bearer " + localStorage.getItem("accessToken"),
+              Authorization: "Bearer " + token,
             },
           })
           .then((res) => setSongs(Data(res.data)))
