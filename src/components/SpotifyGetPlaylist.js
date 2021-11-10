@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Data from "./Data";
 
 const PLAYLISTS_ENDPOINT = "https://api.spotify.com/v1/me/playlists";
 
-function SpotifyGetPlaylist() {
+function SpotifyGetPlaylist({ loggedIn, setPlaylists }) {
   const [token, setToken] = useState("");
-  const [data, setData] = useState({});
 
   useEffect(() => {
     if (localStorage.getItem("accessToken")) {
@@ -13,36 +13,22 @@ function SpotifyGetPlaylist() {
     }
   }, []);
 
-  const handleGetPlaylist = () => {
-    axios
-      .get(PLAYLISTS_ENDPOINT, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((res) => setData(res.data))
-      .catch((err) => console.error(err));
-  };
+  //"https://api.spotify.com/v1/playlists/1WbMHg9PKgK2ENxjdXhZL7/tracks"
 
-  const handleGetTracks = () => {
-    axios
-      .get("https://api.spotify.com/v1/tracks/4m9NfjevXsDVaLtM1kj0Sx", {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((res) => setData(res.data))
-      .catch((err) => console.error(err));
-  };
+  useEffect(() => {
+    if (loggedIn) {
+      axios
+        .get(PLAYLISTS_ENDPOINT, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((res) => setPlaylists(Data(res.data)))
+        .catch((err) => console.error(err));
+    }
+  }, [loggedIn]);
 
-  console.log(data);
-
-  return (
-    <div>
-      <button onClick={handleGetPlaylist}>Get Playlists</button>
-      <button onClick={handleGetTracks}>Get tracks</button>
-    </div>
-  );
+  return null;
 }
 
 export default SpotifyGetPlaylist;

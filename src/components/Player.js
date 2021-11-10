@@ -1,4 +1,3 @@
-import { playAudio } from "../util";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlay,
@@ -47,7 +46,7 @@ function Player({
     audioRef.current.currentTime = e.target.value;
   };
 
-  const songchangeHandler = (direction) => {
+  const songchangeHandler = async (direction) => {
     if (direction < 0 && songInfo.currentTime > 2) {
       audioRef.current.currentTime = 0;
       return;
@@ -64,9 +63,9 @@ function Player({
     songs[curSongIndex].active = false;
     songs[goToSongIndex].active = true;
 
-    setCurrentSong(songs[goToSongIndex]);
-
-    playAudio(audioRef, setIsPlaying);
+    await setCurrentSong(songs[goToSongIndex]);
+    setIsPlaying(true);
+    audioRef.current.play();
   };
 
   return (
@@ -75,12 +74,7 @@ function Player({
         className={`time-control ${dispLib ? "time-control-lib-active" : ""}`}
       >
         <p>{secondsToTime(songInfo.currentTime)}</p>
-        <div
-          style={{
-            backgroundImage: `linear-gradient(to right, ${currentSong.color[0]}, ${currentSong.color[1]})`,
-          }}
-          className="track"
-        >
+        <div className="track">
           <input
             min={0}
             max={songInfo.duration || 0}

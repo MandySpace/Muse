@@ -3,37 +3,17 @@ import Song from "./components/Song";
 import Library from "./components/Library";
 import Nav from "./components/Nav";
 import SpotifyGetPlaylist from "./components/SpotifyGetPlaylist";
+import SpotifyLogin from "./components/SpotifyLogin";
 import "./styles/app.scss";
-import data from "./data";
 import { useState, useRef, useEffect } from "react";
 
-const CLIENT_ID = "0df5782ff13e4b0389221a08ff5be16d";
-const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
-const REDIRECT_URL_AFTER_LOGIN = "http://localhost:3000/";
-
-const SCOPES = [
-  "user-modify-playback-state",
-  "user-read-currently-playing",
-  "user-read-playback-state",
-];
-
-const SPACE_DELIMITER = "%20";
-const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMITER);
-
-const getreturendParamsFromSpotifyAuth = (hash) => {
-  const stringAfterHashtag = hash.substring(1);
-  const paramsInURL = stringAfterHashtag.split("&");
-  const paramsSplitUp = paramsInURL.reduce((acc, cur) => {
-    const [key, value] = cur.split("=");
-    acc[key] = value;
-    return acc;
-  }, {});
-  return paramsSplitUp;
-};
-
 function App() {
-  const [songs, setSongs] = useState(data());
-  const [currentSong, setCurrentSong] = useState(songs[0]);
+  //STATE HOOKS
+
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [songs, setSongs] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
+  const [currentSong, setCurrentSong] = useState();
   const [isPlaying, setIsPlaying] = useState(false);
   const [songInfo, setSongInfo] = useState({
     currentTime: 0,
@@ -41,7 +21,11 @@ function App() {
   });
   const [dispLib, setDispLib] = useState(false);
 
+  //REF HOOKS
+
   const audioRef = useRef(null);
+
+  //USE EFFECT
 
   useEffect(() => {
     if (window.location.hash) {
@@ -51,8 +35,13 @@ function App() {
       localStorage.setItem("accessToken", access_token);
       localStorage.setItem("expiresIn", expires_in);
       localStorage.setItem("tokenType", token_type);
+      setLoggedIn(true);
     }
   }, []);
+
+  useEffect(() => setSongs(playlists), [playlists]);
+
+  //HANDLERS
 
   const timeUpdateHandler = (e) => {
     setSongInfo({
@@ -63,55 +52,101 @@ function App() {
   };
 
   const songEndedHandler = async () => {
+    if (currentSong.active === undefined) {
+      setSongInfo({
+        ...songInfo,
+        currentTime: 0,
+      });
+      setIsPlaying(false);
+      return;
+    }
     const curSongIndex = songs.indexOf(currentSong);
     songs[curSongIndex].active = false;
-    await setCurrentSong(songs[curSongIndex + 1]);
-    songs[curSongIndex + 1].active = true;
+    const nextIndex = curSongIndex + 1 >= songs.length ? 0 : curSongIndex + 1;
+    songs[nextIndex].active = true;
+    await setCurrentSong(songs[nextIndex]);
+
     audioRef.current.play();
   };
 
-  const handleLogin = () => {
-    window.location = `${SPOTIFY_AUTHORIZE_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL_AFTER_LOGIN}&scope=${SCOPES_URL_PARAM}&response_type=token&show_dialog=true`;
+  //FUNCTIONS
+  const getreturendParamsFromSpotifyAuth = (hash) => {
+    const stringAfterHashtag = hash.substring(1);
+    const paramsInURL = stringAfterHashtag.split("&");
+    const paramsSplitUp = paramsInURL.reduce((acc, cur) => {
+      const [key, value] = cur.split("=");
+      acc[key] = value;
+      return acc;
+    }, {});
+    return paramsSplitUp;
   };
+
+  //JSX
 
   return (
     <div className={`App ${dispLib ? "App-lib-active" : ""}`}>
-      <Nav setDispLib={setDispLib} dispLib={dispLib} />
-      <Library
-        songs={songs}
-        setCurrentSong={setCurrentSong}
-        audioRef={audioRef}
-        setIsPlaying={setIsPlaying}
-        dispLib={dispLib}
-      />
+      <div className={`log-in-page ${loggedIn ? "hidden" : ""}`}>
+        <SpotifyLogin />
+      </div>
+
       <div
-        className={`player-container ${
-          dispLib ? "player-container-lib-active" : ""
+        className={`app-container ${loggedIn ? "" : "hidden"} ${
+          dispLib ? "app-container-lib-active" : ""
         }`}
       >
-        <Song currentSong={currentSong} />
-        <Player
-          currentSong={currentSong}
-          setCurrentSong={setCurrentSong}
-          isPlaying={isPlaying}
-          setIsPlaying={setIsPlaying}
-          audioRef={audioRef}
-          songInfo={songInfo}
-          setSongInfo={setSongInfo}
-          songs={songs}
-          setSongs={setSongs}
+        <Nav
+          setDispLib={setDispLib}
           dispLib={dispLib}
+          setCurrentSong={setCurrentSong}
+        />
+
+        <Library
+          songs={songs}
+          setCurrentSong={setCurrentSong}
+          audioRef={audioRef}
+          setIsPlaying={setIsPlaying}
+          dispLib={dispLib}
+          setSongs={setSongs}
+          playlists={playlists}
+        />
+        {currentSong ? (
+          <div
+            className={`player-container ${
+              dispLib ? "player-container-lib-active" : ""
+            }`}
+          >
+            <Song currentSong={currentSong} />
+            <Player
+              currentSong={currentSong}
+              setCurrentSong={setCurrentSong}
+              isPlaying={isPlaying}
+              setIsPlaying={setIsPlaying}
+              audioRef={audioRef}
+              songInfo={songInfo}
+              setSongInfo={setSongInfo}
+              songs={songs}
+              setSongs={setSongs}
+              dispLib={dispLib}
+            />
+          </div>
+        ) : (
+          ""
+        )}
+
+        <audio
+          ref={audioRef}
+          src={currentSong?.preview_url}
+          onTimeUpdate={timeUpdateHandler}
+          onLoadedMetadata={timeUpdateHandler}
+          onEnded={songEndedHandler}
+        ></audio>
+
+        <SpotifyGetPlaylist
+          loggedIn={loggedIn}
+          setSongs={setSongs}
+          setPlaylists={setPlaylists}
         />
       </div>
-      <audio
-        ref={audioRef}
-        src={currentSong.audio}
-        onTimeUpdate={timeUpdateHandler}
-        onLoadedMetadata={timeUpdateHandler}
-        onEnded={songEndedHandler}
-      ></audio>
-      <SpotifyGetPlaylist />
-      <button onClick={handleLogin}>Login</button>
     </div>
   );
 }

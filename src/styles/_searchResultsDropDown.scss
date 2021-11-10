@@ -1,0 +1,27 @@
+.drop-down {
+  width: 100%;
+  height: min-content;
+  max-height: 50vh;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--color-bg-light);
+  overflow-y: scroll;
+}
+
+.results {
+  display: flex;
+  gap: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 0.5rem;
+
+  &:hover {
+    background-color: var(--color-bg-hover);
+  }
+}
+
+.results-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

@@ -3,23 +3,25 @@
 @import "player";
 @import "library";
 @import "nav";
+@import "login";
+@import "searchResultsDropDown";
 
-.App {
+.app-container {
   width: 100%;
+  height: 100vh;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 100px 1fr;
   grid-template-areas:
     "nav"
     "player";
-  height: 100vh;
 
   @media screen and (max-width: 50em) {
     grid-template-rows: 70px 1fr;
   }
 }
 
-.App-lib-active {
+.app-container-lib-active {
   grid-template-columns: 23em 1fr;
   grid-template-areas:
     "nav nav"

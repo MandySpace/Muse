@@ -2,26 +2,51 @@
   width: 100%;
   grid-area: nav;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 0 3rem;
   background-color: var(--color-bg-light);
   border-bottom: 1px solid rgba(255, 255, 255, 0.26);
+  gap: 1rem;
 
   h1 {
     font-size: 3rem;
   }
 
-  input {
+  .search-flex {
+    display: flex;
+    width: 30%;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .search {
+    flex: 1;
+    padding: 1rem 1rem;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: 1rem;
+    background-color: var(--color-font);
+  }
+
+  .search-btn {
+    border: none;
+    background-color: var(--color-font);
+    cursor: pointer;
+    padding: 0 1rem;
+  }
+
+  .checkbox {
     // visibility: hidden;
     display: none;
   }
 
-  input:checked + label {
+  .checkbox-lib:checked + .lib-checkbox-label {
     background-color: var(--color-bg-active);
   }
 
-  label {
+  .lib-checkbox-label {
     border-radius: 100px;
     padding: 1rem;
     // border: 1px solid rgb(228, 228, 228);
@@ -46,14 +71,55 @@
         "nav nav"
         "lib player";
     }
+
     &:active .library {
       display: block;
     }
   }
 
-  // svg {
-  //   @media screen and (max-width: 50em) {
-  //     font-size: 1.5rem;
-  //   }
-  // }
+  .user {
+    width: min-content;
+    position: relative;
+
+    .user-img {
+      width: 64px;
+      border-radius: 50%;
+    }
+    // .user-info {
+    //   width: 20vw;
+    //   min-width: 300px;
+    //   height: 10vw;
+    //   min-height: 150px;
+    //   position: absolute;
+    //   top: 150%;
+    //   right: 0;
+    //   background-color: var(--color-bg-active);
+    //   clip-path: polygon(
+    //     0 10%,
+    //     87% 10%,
+    //     90% 0,
+    //     90.5% 10%,
+    //     100% 10%,
+    //     100% 100%,
+    //     0 100%
+    //   );
+    //   opacity: 0;
+
+    //   display: flex;
+    //   flex-direction: column;
+    //   justify-content: center;
+    //   align-items: center;
+
+    //   h3 {
+    //     font-size: 1.5rem;
+    //   }
+
+    //   h4 {
+    //     font-size: 1.3rem;
+    //   }
+    // }
+    // input:checked ~ .user-info {
+    //   opacity: 1;
+    // }
+  }
 }

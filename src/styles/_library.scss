@@ -5,8 +5,29 @@
   -webkit-overflow-scrolling: auto !important;
   display: none;
 
-  h2 {
+  .lib-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin: 2rem 1rem;
+  }
+
+  .lib-title {
+    display: inline-block;
+  }
+
+  .back-icon {
+    box-sizing: content-box;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 0.3em;
+
+    &:hover {
+      background-color: var(--color-bg-active);
+    }
+  }
+  .hide-back-icon {
+    visibility: hidden;
   }
 
   .library-songs {
