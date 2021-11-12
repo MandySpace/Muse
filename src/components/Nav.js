@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import SearchResultsDropDown from "./SearchResultsDropDown";
 import axios from "axios";
 import User from "./User";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const parseData = (data) => {
   const { items } = data.tracks;
