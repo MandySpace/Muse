@@ -1,6 +1,6 @@
 const CLIENT_ID = "0df5782ff13e4b0389221a08ff5be16d";
 const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
-const REDIRECT_URL_AFTER_LOGIN = "https://muse-music-player.netlify.app";
+const REDIRECT_URL_AFTER_LOGIN = "https://muse-music-player.netlify.app/";
 
 const SCOPES = [];
 /* "user-modify-playback-state",
