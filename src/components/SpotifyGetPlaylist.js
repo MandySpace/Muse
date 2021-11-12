@@ -18,7 +18,7 @@ function SpotifyGetPlaylist({ loggedIn, setPlaylists, token, setLoggedIn }) {
         .then((res) => setPlaylists(Data(res.data)))
         .catch((err) => setLoggedIn(false));
     }
-  }, [loggedIn]);
+  }, [loggedIn, token, setLoggedIn, setPlaylists]);
 
   return null;
 }

@@ -7,12 +7,14 @@
   padding: 0 2rem;
   background-color: var(--color-bg-light);
   border-bottom: 1px solid rgba(255, 255, 255, 0.26);
-  gap: 1rem;
 
   h1 {
     font-size: 3rem;
     font-weight: 400;
     cursor: pointer;
+    @media screen and (max-width: 50em) {
+      font-size: 2rem;
+    }
 
     span {
       color: var(--color-bg-active);
@@ -20,15 +22,18 @@
   }
 
   .search-flex {
+    width: 100%;
     display: flex;
-    width: 30%;
-    margin: 0 auto;
+    flex: 100%;
     position: relative;
   }
 
   .search {
-    flex: 1;
-    padding: 1rem 1rem;
+    width: 70%;
+    min-width: 100px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1em 1em;
     border: none;
     outline: none;
     font-family: inherit;
@@ -46,6 +51,9 @@
       border-radius: 50%;
       cursor: pointer;
       position: relative;
+      @media screen and (max-width: 50em) {
+        width: 45px;
+      }
 
       &:hover {
         outline: 2px solid var(--color-bg-active);
@@ -92,7 +100,7 @@
       }
     }
 
-    .checkbox-user:checked ~ form *:not(:first-child) {
+    .checkbox-user:checked ~ div *:not(:first-child) {
       visibility: visible;
       transform: translateY(0);
     }

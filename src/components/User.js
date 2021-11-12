@@ -12,15 +12,19 @@ function User({
   setLoggedIn,
 }) {
   useEffect(() => {
-    axios
-      .get("https://api.spotify.com/v1/me", {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      })
-      .then((res) => setUserData(res.data))
-      .catch((err) => console.error("From User.js " + err));
-  }, [token]);
+    if (token) {
+      axios
+        .get("https://api.spotify.com/v1/me", {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+        .then((res) => {
+          setUserData(res.data);
+        })
+        .catch((err) => console.error("From User.js " + err));
+    }
+  }, [token, setUserData]);
 
   const checkboxRef = useRef(null);
 
@@ -41,7 +45,7 @@ function User({
           />
         </label>
 
-        <form action="#">
+        <div>
           <input
             className="checkbox-lib checkbox"
             type="checkbox"
@@ -60,7 +64,7 @@ function User({
           <div className="sign-out" onClick={() => setLoggedIn(false)}>
             <FontAwesomeIcon size="2x" icon={faSignOutAlt} />
           </div>
-        </form>
+        </div>
       </form>
     </div>
   );

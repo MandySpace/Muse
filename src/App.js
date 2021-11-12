@@ -139,56 +139,60 @@ function App() {
           playlists={playlists}
           token={token}
         />
-        {currentSong ? (
-          <div
-            className={`player-container ${
-              dispLib ? "player-container-lib-active" : ""
-            }`}
-          >
-            <Song currentSong={currentSong} />
-            <Player
-              currentSong={currentSong}
-              setCurrentSong={setCurrentSong}
-              isPlaying={isPlaying}
-              setIsPlaying={setIsPlaying}
-              audioRef={audioRef}
-              songInfo={songInfo}
-              setSongInfo={setSongInfo}
-              songs={songs}
-              setSongs={setSongs}
-              dispLib={dispLib}
-            />
-          </div>
-        ) : (
-          <div className="user-info">
-            <h2 className="user-name">Welcome, {userData?.display_name}</h2>
-            <p className="msg">
-              Start by searching for a song or selecting your favourite
-              playlist!
-            </p>
-            <div className="playlist-grid">
-              {playlists.map((playlist) => {
-                return (
-                  <div
-                    onClick={() => playlistClickHandler(playlist)}
-                    className="playlist-info"
-                    key={playlist.id}
-                  >
-                    <div className="playlist-img-container">
-                      <img
-                        className="playlist-img"
-                        src={playlist.images[0]?.url}
-                        alt=""
-                      />
-                    </div>
-                    <h3 className="playlist-name">{playlist.name}</h3>
-                    <h4 className="playlist-type">{playlist.type}</h4>
-                  </div>
-                );
-              })}
+        <div
+          className={`player-container ${
+            dispLib ? "player-container-lib-active" : ""
+          }`}
+        >
+          {currentSong ? (
+            <div>
+              <Song currentSong={currentSong} />
+              <Player
+                currentSong={currentSong}
+                setCurrentSong={setCurrentSong}
+                isPlaying={isPlaying}
+                setIsPlaying={setIsPlaying}
+                audioRef={audioRef}
+                songInfo={songInfo}
+                setSongInfo={setSongInfo}
+                songs={songs}
+                setSongs={setSongs}
+                dispLib={dispLib}
+              />
             </div>
-          </div>
-        )}
+          ) : (
+            <div
+              className={`user-info ${dispLib ? "user-info-lib-active" : ""}`}
+            >
+              <h2 className="user-name">Welcome, {userData?.display_name}</h2>
+              <p className="msg">
+                Start by searching for a song or selecting your favourite
+                playlist!
+              </p>
+              <div className="playlist-grid">
+                {playlists.map((playlist) => {
+                  return (
+                    <div
+                      onClick={() => playlistClickHandler(playlist)}
+                      className="playlist-info"
+                      key={playlist.id}
+                    >
+                      <div className="playlist-img-container">
+                        <img
+                          className="playlist-img"
+                          src={playlist.images[0]?.url}
+                          alt=""
+                        />
+                      </div>
+                      <h3 className="playlist-name">{playlist.name}</h3>
+                      <h4 className="playlist-type">{playlist.type}</h4>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
 
         <audio
           ref={audioRef}

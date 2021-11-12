@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import SearchResultsDropDown from "./SearchResultsDropDown";
 import axios from "axios";
 import User from "./User";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const parseData = (data) => {
   const { items } = data.tracks;
@@ -52,21 +54,17 @@ function Nav({
       })
       .then((res) => setSearchQueryResults(parseData(res.data)))
       .catch((err) => console.error(err));
-  }, [searchQuery]);
-
-  const searchHandler = (e) => {
-    e.preventDefault();
-  };
+  }, [searchQuery, token]);
 
   return (
     <nav className="nav">
       <h1 onClick={() => setCurrentSong()}>Muse</h1>
 
-      <form action="#" className="search-flex">
+      <div className="search-flex">
         <input
           className="search"
           onChange={(e) => setSearchQuery(e.target.value)}
-          type="text"
+          type="search"
           value={searchQuery}
           placeholder="Search for tracks/artists..."
         />
@@ -79,7 +77,7 @@ function Nav({
           setSearchQuery={setSearchQuery}
           songs={songs}
         />
-      </form>
+      </div>
 
       <User
         className="user"
