@@ -21,19 +21,6 @@
   }
 }
 
-.app-container-lib-active {
-  grid-template-columns: 27em 1fr;
-  grid-template-areas:
-    "nav nav"
-    "lib player";
-  @media screen and (max-width: 70em) {
-    grid-template-columns: 1fr;
-    grid-template-rows: 60px 1fr;
-    grid-template-areas:
-      "nav"
-      "lib";
-  }
-}
 .hidden {
   display: none;
 }
@@ -41,12 +28,6 @@
 .player-container {
   grid-area: player;
   padding: 2rem 0;
-}
-
-.player-container-lib-active {
-  @media screen and (max-width: 70em) {
-    display: none;
-  }
 }
 
 .user-info {
@@ -60,7 +41,7 @@
 
   .user-name {
     font-size: 6rem;
-    margin-top: 2em;
+    margin-top: 2rem;
     margin-bottom: 0;
     text-align: center;
 
@@ -84,7 +65,7 @@
 
   .playlist-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(9.375rem, 1fr));
     gap: 2rem;
   }
 

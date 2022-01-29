@@ -54,9 +54,17 @@ function Nav({
       .catch((err) => console.error(err));
   }, [searchQuery, token]);
 
+  const homeHandler = () => {
+    setIsPlaying(false);
+    audioRef.current.pause();
+    setCurrentSong();
+  };
+
   return (
     <nav className="nav">
-      <h1 onClick={() => setCurrentSong()}>Muse</h1>
+      <h1 onClick={homeHandler}>
+        Muse <div className="underline"></div>{" "}
+      </h1>
 
       <div className="search-flex">
         <input

@@ -4,7 +4,11 @@ import {
   faPause,
   faStepForward,
   faStepBackward,
+  faVolumeUp,
+  faVolumeMute,
 } from "@fortawesome/free-solid-svg-icons";
+import { useRef, useState } from "react";
+import { useEffect } from "react/cjs/react.development";
 
 function Player({
   songInfo,
@@ -17,6 +21,10 @@ function Player({
   songs,
   dispLib,
 }) {
+  const [volume, setVolume] = useState(0.7);
+
+  const prevVolume = useRef(0.7);
+
   //FUNCTIONS
   function secondsToTime(secs) {
     secs = Number(secs);
@@ -68,6 +76,23 @@ function Player({
     audioRef.current.play();
   };
 
+  const volumeChangeHandler = (e) => {
+    prevVolume.current = e.target.value;
+    setVolume(e.target.value);
+  };
+
+  const muteHandler = () => {
+    if (volume === 0) {
+      setVolume(prevVolume.current);
+      return;
+    }
+    setVolume(0);
+  };
+
+  useEffect(() => {
+    audioRef.current.volume = volume;
+  }, [volume, audioRef]);
+
   return (
     <div className="player">
       <div
@@ -81,6 +106,7 @@ function Player({
             value={songInfo.currentTime}
             onChange={dragHandler}
             type="range"
+            className="track-input"
           />
           <div
             className="animate-track"
@@ -109,6 +135,23 @@ function Player({
           size="2x"
           icon={faStepForward}
           onClick={() => songchangeHandler(1)}
+        />
+      </div>
+      <div className="volume-knob">
+        <FontAwesomeIcon
+          className="mute"
+          size="2x"
+          icon={volume === 0 ? faVolumeMute : faVolumeUp}
+          onClick={muteHandler}
+        />
+        <input
+          min="0"
+          max="1"
+          step="0.01"
+          value={volume}
+          onChange={volumeChangeHandler}
+          type="range"
+          className="volume"
         />
       </div>
     </div>

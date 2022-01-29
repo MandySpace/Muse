@@ -1,5 +1,7 @@
 import axios from "axios";
 import Data from "./Data";
+import { motion } from "framer-motion";
+import { fadeAnim } from "../animation";
 
 function LibrarySong({
   audioRef,
@@ -9,18 +11,24 @@ function LibrarySong({
   songs,
   setSongs,
   token,
+  setIsLoading,
 }) {
   async function setCurrentSongHandler() {
     try {
       if (song.type === "playlist") {
+        setIsLoading(true);
         axios
           .get(song.tracks.href, {
             headers: {
               Authorization: "Bearer " + token,
             },
           })
-          .then((res) => setSongs(Data(res.data)))
+          .then((res) => {
+            setSongs(Data(res.data));
+            setIsLoading(false);
+          })
           .catch((err) => console.error(err));
+
         return;
       }
       songs.forEach((song) => (song.active = false));
@@ -34,7 +42,8 @@ function LibrarySong({
   }
 
   return (
-    <div
+    <motion.div
+      variants={fadeAnim(0.2)}
       onClick={setCurrentSongHandler}
       className={`library-song ${song.active ? "selected" : ""}`}
     >
@@ -43,7 +52,7 @@ function LibrarySong({
         <h3>{song.name}</h3>
         <h4>{song.artists}</h4>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

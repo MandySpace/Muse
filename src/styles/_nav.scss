@@ -7,17 +7,25 @@
   padding: 0 2rem;
   background-color: var(--color-bg-light);
   border-bottom: 1px solid rgba(255, 255, 255, 0.26);
+  min-height: 6rem;
 
   h1 {
     font-size: 3rem;
-    font-weight: 400;
+    font-family: "Poiret One", cursive;
     cursor: pointer;
+    position: relative;
+
     @media screen and (max-width: 50em) {
       font-size: 2rem;
     }
-
-    span {
-      color: var(--color-bg-active);
+    .underline {
+      position: absolute;
+      height: 1px;
+      width: 60%;
+      bottom: 0;
+      right: 0;
+      // background-color: var(--color-bg-active);
+      background: var(--color-font);
     }
   }
 
@@ -30,8 +38,8 @@
 
   .search {
     width: 70%;
-    min-width: 100px;
-    max-width: 800px;
+    min-width: 6.25rem;
+    max-width: 50rem;
     margin: 0 auto;
     padding: 1em 1em;
     border: none;
@@ -47,16 +55,19 @@
     position: relative;
 
     .user-img {
-      width: 64px;
+      width: 4rem;
       border-radius: 50%;
       cursor: pointer;
       position: relative;
-      @media screen and (max-width: 50em) {
-        width: 45px;
-      }
 
       &:hover {
         outline: 2px solid var(--color-bg-active);
+      }
+
+      @media (hover: none) {
+        &:hover {
+          outline: none;
+        }
       }
     }
 
@@ -66,10 +77,10 @@
 
     .lib-checkbox-label,
     .sign-out {
-      border-radius: 100px;
+      border-radius: 50%;
       padding: 1rem;
       color: rgb(228, 228, 228);
-      background-color: var(--color-bg-hover);
+      background-color: #414141;
       cursor: pointer;
       position: absolute;
       visibility: hidden;

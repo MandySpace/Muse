@@ -8,6 +8,8 @@ import "./styles/app.scss";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import Data from "./components/Data";
+import { motion } from "framer-motion";
+import { fadeAnim } from "./animation";
 
 function App() {
   //STATE HOOKS
@@ -23,6 +25,7 @@ function App() {
     duration: 0,
   });
   const [dispLib, setDispLib] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   //REF HOOKS
 
@@ -48,7 +51,9 @@ function App() {
     }
   }, []);
 
-  useEffect(() => setSongs(playlists), [playlists]);
+  useEffect(() => {
+    setSongs(playlists);
+  }, [playlists]);
 
   //HANDLERS
 
@@ -79,13 +84,17 @@ function App() {
   };
 
   const playlistClickHandler = (playlist) => {
+    setIsLoading(true);
     axios
       .get(playlist.tracks.href, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("accessToken"),
         },
       })
-      .then((res) => setSongs(Data(res.data)))
+      .then((res) => {
+        setSongs(Data(res.data));
+        setIsLoading(false);
+      })
       .catch((err) => console.error(err));
     setDispLib(true);
   };
@@ -105,16 +114,17 @@ function App() {
   //JSX
 
   return (
-    <div className={`App ${dispLib ? "App-lib-active" : ""}`}>
+    <motion.div
+      variants={fadeAnim(1, 0.2)}
+      initial="hidden"
+      animate="show"
+      className={`App ${dispLib ? "App-lib-active" : ""}`}
+    >
       <div className={`log-in-page ${loggedIn ? "hidden" : ""}`}>
         <SpotifyLogin />
       </div>
 
-      <div
-        className={`app-container ${loggedIn ? "" : "hidden"} ${
-          dispLib ? "app-container-lib-active" : ""
-        }`}
-      >
+      <div className={`app-container ${loggedIn ? "" : "hidden"}`}>
         <Nav
           setDispLib={setDispLib}
           dispLib={dispLib}
@@ -127,7 +137,6 @@ function App() {
           token={token}
           setLoggedIn={setLoggedIn}
         />
-
         <Library
           songs={songs}
           setCurrentSong={setCurrentSong}
@@ -138,14 +147,12 @@ function App() {
           setSongs={setSongs}
           playlists={playlists}
           token={token}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
         />
-        <div
-          className={`player-container ${
-            dispLib ? "player-container-lib-active" : ""
-          }`}
-        >
+        <div className={`player-container`}>
           {currentSong ? (
-            <div>
+            <motion.div variants={fadeAnim}>
               <Song currentSong={currentSong} />
               <Player
                 currentSong={currentSong}
@@ -159,11 +166,9 @@ function App() {
                 setSongs={setSongs}
                 dispLib={dispLib}
               />
-            </div>
+            </motion.div>
           ) : (
-            <div
-              className={`user-info ${dispLib ? "user-info-lib-active" : ""}`}
-            >
+            <motion.div variants={fadeAnim} className={`user-info`}>
               <h2 className="user-name">Welcome, {userData?.display_name}</h2>
               <p className="msg">
                 Start by searching for a song or selecting your favourite
@@ -190,10 +195,9 @@ function App() {
                   );
                 })}
               </div>
-            </div>
+            </motion.div>
           )}
         </div>
-
         <audio
           ref={audioRef}
           src={currentSong?.preview_url}
@@ -201,7 +205,6 @@ function App() {
           onLoadedMetadata={timeUpdateHandler}
           onEnded={songEndedHandler}
         ></audio>
-
         <SpotifyGetPlaylist
           loggedIn={loggedIn}
           setSongs={setSongs}
@@ -210,7 +213,7 @@ function App() {
           setLoggedIn={setLoggedIn}
         />
       </div>
-    </div>
+    </motion.div>
   );
 }
 

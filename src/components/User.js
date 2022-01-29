@@ -3,14 +3,7 @@ import { useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMusic, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 
-function User({
-  setUserData,
-  userData,
-  token,
-  dispLib,
-  setDispLib,
-  setLoggedIn,
-}) {
+function User({ setUserData, userData, token, setDispLib, setLoggedIn }) {
   useEffect(() => {
     if (token) {
       axios
@@ -26,6 +19,23 @@ function User({
     }
   }, [token, setUserData]);
 
+  const closeUserMenu = (e) => {
+    if (
+      !(
+        e.target.classList.contains("user-img") ||
+        e.target.classList.contains("checkbox-user") ||
+        e.target.classList.contains("checkbox")
+      )
+    ) {
+      checkboxRef.current.checked = false;
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("click", closeUserMenu);
+    return () => window.removeEventListener("click", closeUserMenu);
+  }, []);
+
   const checkboxRef = useRef(null);
 
   return (
@@ -37,6 +47,7 @@ function User({
           type="checkbox"
           id="user-toggle"
         />
+
         <label htmlFor="user-toggle" className="user-checkbox-label">
           <img
             src={userData?.images[0].url}
@@ -55,7 +66,7 @@ function User({
             className="lib-checkbox-label"
             htmlFor="lib-toggle"
             onClick={() => {
-              setDispLib(!dispLib);
+              setDispLib((prevState) => !prevState);
               checkboxRef.current.checked = false;
             }}
           >

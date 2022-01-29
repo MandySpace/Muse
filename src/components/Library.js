@@ -12,6 +12,8 @@ function Library({
   setDispLib,
   playlists,
   token,
+  isLoading,
+  setIsLoading,
 }) {
   const goBackHandler = () => {
     setSongs(playlists);
@@ -20,9 +22,6 @@ function Library({
   return (
     <div className={`library ${dispLib ? "library-lib-active" : ""}`}>
       <div className="lib-header">
-        <h2 className="lib-title">
-          {songs[0]?.type === "playlist" ? "Playlists" : "Tracks"}
-        </h2>
         <FontAwesomeIcon
           icon={faArrowLeft}
           size="2x"
@@ -31,6 +30,9 @@ function Library({
           }`}
           onClick={goBackHandler}
         />
+        <h2 className="lib-title">
+          {songs[0]?.type === "playlist" ? "Playlists" : "Tracks"}
+        </h2>
 
         <FontAwesomeIcon
           icon={faTimes}
@@ -39,20 +41,29 @@ function Library({
           onClick={() => setDispLib(false)}
         />
       </div>
-      <div className="library-songs">
-        {songs.map((song) => (
-          <LibrarySong
-            song={song}
-            songs={songs}
-            setCurrentSong={setCurrentSong}
-            key={song.id}
-            audioRef={audioRef}
-            setIsPlaying={setIsPlaying}
-            setSongs={setSongs}
-            token={token}
-          />
-        ))}
-      </div>
+      {isLoading ? (
+        <></>
+      ) : (
+        <>
+          {songs && (
+            <div className="library-songs">
+              {songs.map((song) => (
+                <LibrarySong
+                  song={song}
+                  songs={songs}
+                  setCurrentSong={setCurrentSong}
+                  key={song.id}
+                  audioRef={audioRef}
+                  setIsPlaying={setIsPlaying}
+                  setSongs={setSongs}
+                  token={token}
+                  setIsLoading={setIsLoading}
+                />
+              ))}
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
