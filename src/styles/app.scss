@@ -36,7 +36,7 @@
   justify-content: flex-start;
   align-items: center;
   gap: 2rem;
-  padding: 1em;
+  padding: 0 2em;
   grid-area: player;
 
   .user-name {
@@ -48,6 +48,11 @@
     @media screen and (max-width: 50em) {
       font-size: 4rem;
       margin-top: 1em;
+    }
+
+    @media screen and (max-width: 25em) {
+      font-size: 4rem;
+      margin-top: 0em;
     }
   }
 

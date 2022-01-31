@@ -13,13 +13,13 @@
   transition: all 0.3s ease-out;
 
   .lib-header {
-    min-height: 6rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1rem 1rem;
     padding-left: 2rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.26);
+    height: 6rem;
   }
   h2 {
     text-align: center;
