@@ -8,7 +8,7 @@ import {
   faVolumeMute,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
-import { useEffect } from "react/cjs/react.development";
+import { useEffect } from "react";
 
 function Player({
   songInfo,

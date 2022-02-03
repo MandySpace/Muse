@@ -168,7 +168,7 @@ function App() {
               />
             </motion.div>
           ) : (
-            <motion.div variants={fadeAnim} className={`user-info`}>
+            <motion.div variants={fadeAnim} className="user-info">
               <h2 className="user-name">Welcome, {userData?.display_name}</h2>
               <p className="msg">
                 Start by searching for a song or selecting your favourite
