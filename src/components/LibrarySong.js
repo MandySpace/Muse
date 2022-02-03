@@ -35,7 +35,7 @@ function LibrarySong({
       song.active = true;
       await setCurrentSong(song);
       setIsPlaying(true);
-      audioRef.current.play();
+      audioRef.current?.play();
     } catch (err) {
       console.error("🎯" + err);
     }
