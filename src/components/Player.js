@@ -90,7 +90,7 @@ function Player({
   };
 
   useEffect(() => {
-    audioRef.current.volume = volume;
+    if (audioRef.current) audioRef.current.volume = volume;
   }, [volume, audioRef]);
 
   return (

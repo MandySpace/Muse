@@ -27,7 +27,7 @@ function User({ setUserData, userData, token, setDispLib, setLoggedIn }) {
         e.target.classList.contains("checkbox")
       )
     ) {
-      checkboxRef.current.checked = false;
+      if (checkboxRef.current) checkboxRef.current.checked = false;
     }
   };
 
