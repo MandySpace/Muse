@@ -186,7 +186,7 @@ function App() {
                         <img
                           className="playlist-img"
                           src={playlist.images[0]?.url}
-                          alt=""
+                          alt="playlist cover"
                         />
                       </div>
                       <h3 className="playlist-name">{playlist.name}</h3>
