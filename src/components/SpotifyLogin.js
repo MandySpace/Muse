@@ -1,8 +1,10 @@
 import girl from "../girl.svg";
 
-const CLIENT_ID = "0df5782ff13e4b0389221a08ff5be16d";
-const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
-const REDIRECT_URL_AFTER_LOGIN = "https://muse-music-player.netlify.app/";
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+const SPOTIFY_AUTHORIZE_ENDPOINT =
+  process.env.REACT_APP_SPOTIFY_AUTHORIZE_ENDPOINT;
+const REDIRECT_URL_AFTER_LOGIN =
+  process.env.REACT_APP_CLIENT_REDIRECT_URL_AFTER_LOGIN;
 
 const SCOPES = [];
 /* "user-modify-playback-state",
