@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SearchResultsDropDown from "./SearchResultsDropDown";
 import axios from "axios";
 import User from "./User";
@@ -40,6 +40,7 @@ function Nav({
 }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchQueryResults, setSearchQueryResults] = useState([]);
+  const debounceRef = useRef(null);
 
   useEffect(() => {
     if (searchQuery === "") return setSearchQueryResults([]);
@@ -60,6 +61,17 @@ function Nav({
     setCurrentSong();
   };
 
+  const queryHandler = (e) => {
+    e.persist();
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    debounceRef.current = setTimeout(() => {
+      setSearchQuery(e.target.value.trim());
+    }, 300);
+  };
+
   return (
     <nav className="nav">
       <h1 onClick={homeHandler}>
@@ -69,7 +81,7 @@ function Nav({
       <div className="search-flex">
         <input
           className="search"
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={queryHandler}
           type="search"
           value={searchQuery}
           placeholder="Search for tracks/artists..."
