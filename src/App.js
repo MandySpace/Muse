@@ -55,6 +55,15 @@ function App() {
     setSongs(playlists);
   }, [playlists]);
 
+  useEffect(() => {
+    if (!loggedIn) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      window.localStorage.clear();
+    }
+  }, [loggedIn]);
+
   //HANDLERS
 
   const timeUpdateHandler = (e) => {
@@ -150,7 +159,7 @@ function App() {
           isLoading={isLoading}
           setIsLoading={setIsLoading}
         />
-        <div className={`player-container`}>
+        <div className="player-container">
           {currentSong ? (
             <motion.div variants={fadeAnim}>
               <Song currentSong={currentSong} />
