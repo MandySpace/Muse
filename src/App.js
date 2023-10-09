@@ -30,6 +30,7 @@ function App() {
   //REF HOOKS
 
   const audioRef = useRef(null);
+  const firstRenderRef = useRef(true);
 
   //USE EFFECT
 
@@ -37,18 +38,20 @@ function App() {
     if (window.location.hash) {
       const { access_token, expires_in, token_type } =
         getreturendParamsFromSpotifyAuth(window.location.hash);
-      localStorage.clear();
-      localStorage.setItem("accessToken", access_token);
-      localStorage.setItem("expiresIn", expires_in);
-      localStorage.setItem("tokenType", token_type);
+      // window.localStorage.clear();
+      window.localStorage.setItem("accessToken", access_token);
+      window.localStorage.setItem("expiresIn", expires_in);
+      window.localStorage.setItem("tokenType", token_type);
+      console.log(access_token);
       setLoggedIn(true);
       setToken(access_token);
       window.history.replaceState(null, null, " ");
-    }
-    if (localStorage.getItem("accessToken")) {
-      setToken(localStorage.getItem("accessToken"));
+    } else if (window.localStorage.getItem("accessToken")) {
+      setToken(window.localStorage.getItem("accessToken"));
       setLoggedIn(true);
     }
+
+    firstRenderRef.current = true;
   }, []);
 
   useEffect(() => {
@@ -56,7 +59,7 @@ function App() {
   }, [playlists]);
 
   useEffect(() => {
-    if (!loggedIn) {
+    if (!loggedIn && !firstRenderRef.current) {
       if (audioRef.current) {
         audioRef.current.pause();
       }
