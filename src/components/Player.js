@@ -90,6 +90,7 @@ function Player({
   };
 
   useEffect(() => {
+    console.log(volume);
     if (audioRef.current) audioRef.current.volume = volume;
   }, [volume, audioRef]);
 
