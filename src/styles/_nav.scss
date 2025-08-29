@@ -6,26 +6,34 @@
   align-items: center;
   padding: 0 2rem;
   background-color: var(--color-bg-light);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.26);
   height: 6rem;
+  box-shadow: var(--shadow-sm);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 
   h1 {
-    font-size: 3rem;
-    font-family: "Poiret One", cursive;
+    font-size: 2.5rem;
+    font-weight: 700;
     cursor: pointer;
     position: relative;
+    background: linear-gradient(135deg, var(--color-accent) 0%, #1ed760 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
 
     @media screen and (max-width: 50em) {
       font-size: 2rem;
     }
-    .underline {
-      position: absolute;
-      height: 1px;
-      width: 60%;
-      bottom: 0;
-      right: 0;
-      // background-color: var(--color-bg-active);
-      background: var(--color-font);
+
+    @media screen and (max-width: 30em) {
+      font-size: 1.5rem;
     }
   }
 
@@ -41,13 +49,37 @@
     min-width: 6.25rem;
     max-width: 50rem;
     margin: 0 auto;
-    padding: 1em 1em;
-    border: none;
+    padding: 1rem 1.5rem;
+    border: 2px solid transparent;
     outline: none;
     font-family: inherit;
     font-size: 1rem;
-    background-color: var(--color-font);
-    border-radius: 50px;
+    background: var(--color-bg-card);
+    color: var(--color-font);
+    border-radius: var(--border-radius-lg);
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+
+    &:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.1);
+    }
+
+    &::placeholder {
+      color: var(--color-font-secondary);
+    }
+
+    @media screen and (max-width: 50em) {
+      width: 60%;
+      padding: 0.875rem 1.25rem;
+      font-size: 0.9rem;
+    }
+
+    @media screen and (max-width: 30em) {
+      width: 70%;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+    }
   }
 
   .user {
@@ -56,18 +88,30 @@
 
     .user-img {
       width: 4rem;
+      height: 4rem;
       border-radius: 50%;
       cursor: pointer;
       position: relative;
+      border: 3px solid transparent;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
 
       &:hover {
-        outline: 2px solid var(--color-bg-active);
+        border-color: var(--color-accent);
+        transform: scale(1.05);
+        box-shadow: var(--shadow-md);
       }
 
       @media (hover: none) {
         &:hover {
-          outline: none;
+          border-color: transparent;
+          transform: none;
         }
+      }
+
+      @media screen and (max-width: 30em) {
+        width: 3rem;
+        height: 3rem;
       }
     }
 

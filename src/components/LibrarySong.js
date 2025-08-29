@@ -12,6 +12,7 @@ function LibrarySong({
   setSongs,
   token,
   setIsLoading,
+  onShowModal,
 }) {
   async function setCurrentSongHandler() {
     try {
@@ -31,6 +32,13 @@ function LibrarySong({
 
         return;
       }
+      // Check if the track has a preview URL
+      if (!song.preview_url) {
+        // Show modal for tracks without preview
+        onShowModal(song);
+        return;
+      }
+
       songs.forEach((song) => (song.active = false));
       song.active = true;
       await setCurrentSong(song);

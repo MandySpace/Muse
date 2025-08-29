@@ -1,6 +1,7 @@
 import LibrarySong from "./LibrarySong";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useRef } from "react";
 
 function Library({
   audioRef,
@@ -14,13 +15,40 @@ function Library({
   token,
   isLoading,
   setIsLoading,
+  onShowModal,
 }) {
+  const libraryRef = useRef(null);
+
   const goBackHandler = () => {
     setSongs(playlists);
   };
 
+  // Handle click outside to close library
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        libraryRef.current &&
+        !libraryRef.current.contains(event.target) &&
+        dispLib
+      ) {
+        setDispLib(false);
+      }
+    };
+
+    if (dispLib) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dispLib, setDispLib]);
+
   return (
-    <div className={`library ${dispLib ? "library-lib-active" : ""}`}>
+    <div
+      ref={libraryRef}
+      className={`library ${dispLib ? "library-lib-active" : ""}`}
+    >
       <div className="lib-header">
         <FontAwesomeIcon
           icon={faArrowLeft}
@@ -58,6 +86,7 @@ function Library({
                   setSongs={setSongs}
                   token={token}
                   setIsLoading={setIsLoading}
+                  onShowModal={onShowModal}
                 />
               ))}
             </div>

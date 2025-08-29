@@ -1,10 +1,10 @@
 .song-container {
   min-height: 55vh;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
+  padding: 2rem;
 
   @media screen and (max-width: 25em) {
     min-height: 50vh;
@@ -12,19 +12,43 @@
 
   img {
     width: 25rem;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.02);
+    }
 
     @media screen and (max-width: 50em) {
       width: 50%;
       min-width: 12.5rem;
     }
+
+    @media screen and (max-width: 30em) {
+      width: 60%;
+      min-width: 10rem;
+    }
+
+    @media screen and (max-width: 25em) {
+      width: 70%;
+      min-width: 8rem;
+    }
   }
 
   h2 {
     padding: 2rem 1rem 0rem 1rem;
+    text-align: center;
+    background: var(--color-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   h3 {
-    // margin-top: 0.5rem;
     font-size: 1.2rem;
+    color: var(--color-font-secondary);
+    text-align: center;
+    margin-top: 0.5rem;
   }
 }

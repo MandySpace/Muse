@@ -6,7 +6,6 @@ import User from "./User";
 const parseData = (data) => {
   const { items } = data.tracks;
   return items
-    .filter((item) => item.preview_url !== null)
     .map((item) => {
       const { name, preview_url, type, id } = item;
       const { images, name: album } = item.album;
@@ -23,6 +22,12 @@ const parseData = (data) => {
         type,
         id,
       };
+    })
+    .sort((a, b) => {
+      // Sort tracks with preview URLs first
+      if (a.preview_url && !b.preview_url) return -1;
+      if (!a.preview_url && b.preview_url) return 1;
+      return 0;
     });
 };
 
@@ -37,22 +42,42 @@ function Nav({
   setUserData,
   token,
   setLoggedIn,
+  onShowModal,
 }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchQueryResults, setSearchQueryResults] = useState([]);
   const debounceRef = useRef(null);
 
   useEffect(() => {
-    if (searchQuery === "") return setSearchQueryResults([]);
-    axios
-      .get(`https://api.spotify.com/v1/search?q=${searchQuery}&type=track`, {
-        headers: {
-          Authorization: "Bearer " + token,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((res) => setSearchQueryResults(parseData(res.data)))
-      .catch((err) => console.error(err));
+    if (searchQuery === "") {
+      setSearchQueryResults([]);
+      return;
+    }
+
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    debounceRef.current = setTimeout(() => {
+      axios
+        .get(
+          `https://api.spotify.com/v1/search?q=${searchQuery}&type=track&market=US&limit=50`,
+          {
+            headers: {
+              Authorization: "Bearer " + token,
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => setSearchQueryResults(parseData(res.data)))
+        .catch((err) => console.error(err));
+    }, 300);
+
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
   }, [searchQuery, token]);
 
   const homeHandler = () => {
@@ -62,14 +87,7 @@ function Nav({
   };
 
   const queryHandler = (e) => {
-    e.persist();
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
-    debounceRef.current = setTimeout(() => {
-      setSearchQuery(e.target.value.trim());
-    }, 300);
+    setSearchQuery(e.target.value);
   };
 
   return (
@@ -94,6 +112,7 @@ function Nav({
           setIsPlaying={setIsPlaying}
           setSearchQuery={setSearchQuery}
           songs={songs}
+          onShowModal={onShowModal}
         />
       </div>
 

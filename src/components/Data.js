@@ -7,7 +7,6 @@ function Data(data) {
     });
   }
   return items
-    .filter((item) => item.track.preview_url !== null)
     .map((item) => {
       const { name, preview_url, type, id } = item.track;
       const { images, name: album } = item.track.album;
@@ -24,6 +23,12 @@ function Data(data) {
         id,
         active: false,
       };
+    })
+    .sort((a, b) => {
+      // Sort tracks with preview URLs first
+      if (a.preview_url && !b.preview_url) return -1;
+      if (!a.preview_url && b.preview_url) return 1;
+      return 0;
     });
 }
 

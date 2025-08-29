@@ -1,5 +1,3 @@
-import girl from "../girl.svg";
-
 const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const SPOTIFY_AUTHORIZE_ENDPOINT =
   process.env.REACT_APP_SPOTIFY_AUTHORIZE_ENDPOINT;
@@ -30,8 +28,13 @@ function SpotifyLogin() {
       <button className="login-btn" onClick={handleLogin}>
         Get Started
       </button>
-      <div className="svg-cont">
-        <img src={girl} alt="" className="svg" />
+      <div className="login-graphics">
+        <div className="music-note music-note-1">♪</div>
+        <div className="music-note music-note-2">♫</div>
+        <div className="music-note music-note-3">♬</div>
+        <div className="music-note music-note-4">♩</div>
+        <div className="music-note music-note-5">♪</div>
+        <div className="music-note music-note-6">♫</div>
       </div>
     </div>
   );

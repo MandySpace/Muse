@@ -2,7 +2,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 100;
+  z-index: 2000;
   width: 100%;
   max-width: 25rem;
   height: 100vh;
@@ -10,7 +10,25 @@
   overflow-y: scroll;
   -webkit-overflow-scrolling: auto !important;
   transform: translateX(-100%);
-  transition: all 0.3s ease-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-lg);
+
+  &::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &.library-lib-active::before {
+    opacity: 1;
+  }
 
   .lib-header {
     display: flex;
@@ -18,8 +36,9 @@
     justify-content: space-between;
     padding: 1rem 1rem;
     padding-left: 2rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.26);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     height: 6rem;
+    background: rgba(255, 255, 255, 0.02);
   }
   h2 {
     text-align: center;
@@ -36,9 +55,11 @@
     cursor: pointer;
     border-radius: 50%;
     padding: 0.5em;
+    transition: all 0.2s ease;
 
     &:hover {
-      color: var(--color-bg-active);
+      color: var(--color-accent);
+      transform: scale(1.1);
     }
   }
 
@@ -56,32 +77,76 @@
 .library-song {
   display: flex;
   gap: 1em;
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   min-height: 8rem;
   will-change: background-color;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
+  border-radius: var(--border-radius-sm);
+  margin: 0.5rem 1rem;
 
   img {
     width: 7em;
+    border-radius: var(--border-radius-sm);
+    box-shadow: var(--shadow-sm);
+
+    @media screen and (max-width: 30em) {
+      width: 5em;
+    }
   }
 
   .song-info {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 0.5rem;
+
+    h3 {
+      font-weight: 600;
+      color: var(--color-font);
+    }
+
+    h4 {
+      color: var(--color-font-secondary);
+    }
   }
 
   &:hover {
-    background-color: var(--color-bg-hover);
+    background: var(--color-bg-hover);
+    transform: translateX(4px);
+  }
+
+  @media screen and (max-width: 30em) {
+    padding: 0.75rem;
+    min-height: 6rem;
+    margin: 0.25rem 0.5rem;
+
+    .song-info {
+      h3 {
+        font-size: 0.9rem;
+      }
+
+      h4 {
+        font-size: 0.8rem;
+      }
+    }
   }
 }
 
 .selected {
-  background-color: var(--color-bg-active);
+  background: linear-gradient(135deg, var(--color-accent) 0%, #1ed760 100%);
+  color: white;
+
+  .song-info {
+    h3,
+    h4 {
+      color: white;
+    }
+  }
 
   &:hover {
-    background-color: var(--color-bg-active);
+    background: linear-gradient(135deg, var(--color-accent) 0%, #1ed760 100%);
+    transform: translateX(4px);
   }
 }
 

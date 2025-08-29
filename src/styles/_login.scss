@@ -4,70 +4,229 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: 3rem;
   padding: 2rem;
+  background: linear-gradient(135deg, var(--color-bg) 0%, #1a1a1a 100%);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        circle at 20% 80%,
+        rgba(29, 185, 84, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(29, 185, 84, 0.1) 0%,
+        transparent 50%
+      );
+    pointer-events: none;
+  }
 
   @media screen and (max-width: 50em) {
-    gap: 5rem;
+    gap: 4rem;
+    padding: 1rem;
   }
 }
 
 .login-title {
-  font-size: 6rem;
-  font-weight: 400;
-  // margin-top: 4em;
+  font-size: 5rem;
+  font-weight: 700;
   text-align: center;
-  line-height: 0.9;
+  line-height: 1.1;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #1ed760 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+  animation: fadeInUp 0.8s ease-out;
+  position: relative;
+  z-index: 1;
 
   @media screen and (max-width: 50em) {
-    font-size: 4rem;
+    font-size: 3.5rem;
+  }
+
+  @media screen and (max-width: 25em) {
+    font-size: 3rem;
   }
 }
 
 .login-btn {
-  font-size: 1.5rem;
-  font-weight: 100;
-  padding: 0.75rem 2rem;
-  background-color: var(--color-bg-active);
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 1rem 3rem;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #1ed760 100%);
   border: none;
-  color: var(--color-font);
+  color: white;
   cursor: pointer;
   border-radius: 50px;
   will-change: transform;
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 
   @media screen and (max-width: 50em) {
     font-size: 1rem;
+    padding: 0.875rem 2.5rem;
   }
 
   &:hover {
-    transform: scale(1.02);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(29, 185, 84, 0.4);
+    background: linear-gradient(135deg, var(--color-accent) 0%, #1ed760 100%);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 }
 
-.svg-cont {
-  width: 50rem;
+.login-graphics {
+  position: relative;
+  width: 100%;
+  height: 200px;
   overflow: hidden;
+  z-index: 1;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
 
-  @media screen and (max-width: 30em) {
-    width: 30rem;
+  .music-note {
+    position: absolute;
+    font-size: 3rem;
+    color: var(--color-accent);
+    opacity: 0.6;
+    animation: float 6s ease-in-out infinite;
+    text-shadow: 0 4px 8px rgba(29, 185, 84, 0.3);
+
+    &.music-note-1 {
+      top: 20%;
+      left: 15%;
+      animation-delay: 0s;
+      font-size: 2.5rem;
+    }
+
+    &.music-note-2 {
+      top: 60%;
+      left: 25%;
+      animation-delay: 1s;
+      font-size: 3.5rem;
+    }
+
+    &.music-note-3 {
+      top: 30%;
+      right: 20%;
+      animation-delay: 2s;
+      font-size: 2rem;
+    }
+
+    &.music-note-4 {
+      top: 70%;
+      right: 15%;
+      animation-delay: 3s;
+      font-size: 3rem;
+    }
+
+    &.music-note-5 {
+      top: 45%;
+      left: 50%;
+      animation-delay: 4s;
+      font-size: 2.8rem;
+    }
+
+    &.music-note-6 {
+      top: 15%;
+      left: 70%;
+      animation-delay: 5s;
+      font-size: 2.2rem;
+    }
   }
 
-  .svg {
-    width: 100%;
-    object-fit: cover;
-    margin: 0 auto;
+  @media screen and (max-width: 50em) {
+    height: 150px;
+
+    .music-note {
+      font-size: 2rem;
+
+      &.music-note-1 {
+        font-size: 1.8rem;
+      }
+      &.music-note-2 {
+        font-size: 2.5rem;
+      }
+      &.music-note-3 {
+        font-size: 1.5rem;
+      }
+      &.music-note-4 {
+        font-size: 2.2rem;
+      }
+      &.music-note-5 {
+        font-size: 2rem;
+      }
+      &.music-note-6 {
+        font-size: 1.6rem;
+      }
+    }
+  }
+
+  @media screen and (max-width: 30em) {
+    height: 120px;
+
+    .music-note {
+      font-size: 1.5rem;
+
+      &.music-note-1 {
+        font-size: 1.3rem;
+      }
+      &.music-note-2 {
+        font-size: 1.8rem;
+      }
+      &.music-note-3 {
+        font-size: 1.1rem;
+      }
+      &.music-note-4 {
+        font-size: 1.6rem;
+      }
+      &.music-note-5 {
+        font-size: 1.4rem;
+      }
+      &.music-note-6 {
+        font-size: 1.2rem;
+      }
+    }
   }
 }
 
 .login-desc {
-  font-size: 1.5rem;
-  font-weight: 100;
-  margin-top: 1rem;
+  font-size: 1.3rem;
+  font-weight: 400;
+  margin: 0;
   text-align: center;
+  color: var(--color-font-secondary);
+  max-width: 600px;
+  line-height: 1.6;
+  animation: fadeInUp 0.8s ease-out 0.3s both;
+  position: relative;
+  z-index: 1;
+
+  @media screen and (max-width: 50em) {
+    font-size: 1.1rem;
+    padding: 0 1rem;
+  }
 
   @media screen and (max-width: 25em) {
-    max-width: 80%;
+    max-width: 90%;
+    font-size: 1rem;
   }
 }
 
@@ -75,4 +234,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 1;
 }

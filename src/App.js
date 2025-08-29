@@ -2,6 +2,7 @@ import Player from "./components/Player";
 import Song from "./components/Song";
 import Library from "./components/Library";
 import Nav from "./components/Nav";
+import Modal from "./components/Modal";
 import SpotifyGetPlaylist from "./components/SpotifyGetPlaylist";
 import SpotifyLogin from "./components/SpotifyLogin";
 import "./styles/app.scss";
@@ -26,6 +27,10 @@ function App() {
   });
   const [dispLib, setDispLib] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [modalData, setModalData] = useState({
+    isOpen: false,
+    track: null,
+  });
 
   //REF HOOKS
 
@@ -111,6 +116,35 @@ function App() {
     setDispLib(true);
   };
 
+  const handleShowModal = (track) => {
+    setModalData({
+      isOpen: true,
+      track: track,
+    });
+  };
+
+  const handleModalConfirm = () => {
+    if (modalData.track) {
+      // Try to open in Spotify app first, fallback to web player
+      const spotifyAppUrl = `spotify:track:${modalData.track.id}`;
+      const spotifyWebUrl = `https://open.spotify.com/track/${modalData.track.id}`;
+
+      // Try to open in Spotify app
+      window.location.href = spotifyAppUrl;
+
+      // Fallback to web player after a short delay
+      setTimeout(() => {
+        window.open(spotifyWebUrl, "_blank");
+      }, 1000);
+    }
+
+    setModalData({ isOpen: false, track: null });
+  };
+
+  const handleModalClose = () => {
+    setModalData({ isOpen: false, track: null });
+  };
+
   //FUNCTIONS
   const getreturendParamsFromSpotifyAuth = (hash) => {
     const stringAfterHashtag = hash.substring(1);
@@ -148,6 +182,7 @@ function App() {
           setUserData={setUserData}
           token={token}
           setLoggedIn={setLoggedIn}
+          onShowModal={handleShowModal}
         />
         <Library
           songs={songs}
@@ -161,6 +196,7 @@ function App() {
           token={token}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
+          onShowModal={handleShowModal}
         />
         <div className="player-container">
           {currentSong ? (
@@ -223,6 +259,20 @@ function App() {
           setPlaylists={setPlaylists}
           token={token}
           setLoggedIn={setLoggedIn}
+        />
+
+        <Modal
+          isOpen={modalData.isOpen}
+          onClose={handleModalClose}
+          onConfirm={handleModalConfirm}
+          title="No Preview Available"
+          message={
+            modalData.track
+              ? `"${modalData.track.name}" by ${modalData.track.artists} doesn't have a preview available on Spotify. Would you like to open the full track in Spotify instead?`
+              : ""
+          }
+          confirmText="Open in Spotify"
+          cancelText="Cancel"
         />
       </div>
     </motion.div>
